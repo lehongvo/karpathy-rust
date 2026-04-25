@@ -1,0 +1,37 @@
+---
+month: 1
+title: Rust Core
+---
+
+# M1 — Rust Core
+
+> Foundation phase, week 1–4. Goal: ownership/lifetime/async understood without lookup, ≥40 commits, 1 OSS PR opened.
+
+## Daily routine
+
+- 1.5–2.5h focused study, ≥5 days/week
+- Commit something — even 5 lines — every study day
+- 1 progress tweet per week (no meme, only concrete: "today I learned X about lifetime elision")
+
+## Focus per week
+
+- **Week 1**: Rust Book ch.1–6 — variables, ownership, structs, enums, error handling.
+  Ship: 30+ Rustlings exercises solved.
+- **Week 2**: Rust Book ch.8–10 — collections, generics, traits, lifetimes.
+  Ship: CLI CSV processor (`clap` + `serde`).
+- **Week 3**: Tokio tutorial sections 1–4. `thiserror` + `anyhow`.
+  Ship: async TCP echo server with shared state via `Arc<Mutex<T>>`.
+- **Week 4**: Push first OSS PR. Pick a tooling repo (clap, serde, tokio examples) — fix a typo, improve a doc, add a test.
+
+## Anti-patterns to avoid
+
+1. Watching tutorials > writing code. Code-to-watch ratio ≥ 2:1.
+2. Trying to "understand everything" before moving on. Use placeholder mental model + return later.
+3. Skipping the OSS PR because "code isn't good enough." Open it. Iterate from feedback.
+
+## End-of-month gate
+
+- [ ] 40+ commits
+- [ ] Ownership + borrow rules internalized (can write `fn foo<'a>(x: &'a str) -> &'a str` without thinking)
+- [ ] 1 OSS PR opened (merged not required)
+- [ ] Public Rustlings completion screenshot

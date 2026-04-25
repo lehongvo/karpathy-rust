@@ -1,0 +1,33 @@
+---
+month: 2
+title: Production Rust
+---
+
+# M2 — Production Rust
+
+> Foundation phase, week 5–8. Goal: ship a real HTTP API with tests + tracing + deploy.
+
+## Why this month matters
+
+Most "I learned Rust" projects are toy CLI demos. Hiring managers want to see production patterns: error propagation, structured logs, integration tests, deployable artifact. M2 is where you cross from "I can write Rust" to "I ship Rust."
+
+## Stack lock-in
+
+- HTTP: **Axum** (async, idiomatic, large ecosystem)
+- DB: **sqlx** with Postgres (compile-time checked SQL)
+- Auth: **JWT** via `jsonwebtoken`
+- Errors: **thiserror** (library) + **anyhow** (binary)
+- Logs: **tracing** + `tracing-subscriber` JSON formatter
+- Tests: integration with `axum::Router::oneshot` + `tokio::test`
+
+## Deployable target
+
+Pick **Fly.io** or **Railway**. Avoid AWS — deploy friction kills momentum.
+
+## End-of-month gate
+
+- [ ] API has 8–12 endpoints (CRUD + auth)
+- [ ] Test coverage ≥ 80%
+- [ ] Logs are structured (JSON), with `request_id` correlation
+- [ ] Deployed publicly with HTTPS, custom domain optional
+- [ ] LeetCode 10 easy in Rust completed
