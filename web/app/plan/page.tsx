@@ -2,17 +2,20 @@ import { PLAN } from "@/lib/plan-data";
 import { MonthCard } from "@/components/MonthCard";
 import { TimelineChart } from "@/components/TimelineChart";
 import { ParallelTracks } from "@/components/ParallelTracks";
+import { PageHeader } from "@/components/PageHeader";
+import { Card } from "@/components/ui/card";
 
 export default function PlanPage() {
   return (
-    <div className="space-y-10">
-      <section>
-        <h1 className="mb-2 text-3xl font-bold">12-month plan</h1>
-        <p className="font-mono text-sm text-white/60">scroll horizontally · click a month to drill in</p>
-      </section>
+    <div className="space-y-12">
+      <PageHeader
+        eyebrow="strategy"
+        title="12-month plan"
+        subtitle="Click any month to drill into tasks. Every task costs roughly 60 hours total budget per month."
+      />
 
       <section>
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {PLAN.map((m) => (
             <MonthCard key={m.index} month={m} />
           ))}
@@ -20,14 +23,14 @@ export default function PlanPage() {
       </section>
 
       <section>
-        <h2 className="mb-4 font-mono text-sm uppercase tracking-wider text-white/60">
-          hours by category × month
-        </h2>
-        <TimelineChart plan={PLAN} />
+        <h2 className="mb-4 text-base font-semibold tracking-tight">Hours by category × month</h2>
+        <Card className="!p-4">
+          <TimelineChart plan={PLAN} />
+        </Card>
       </section>
 
       <section>
-        <h2 className="mb-4 font-mono text-sm uppercase tracking-wider text-white/60">parallel tracks</h2>
+        <h2 className="mb-4 text-base font-semibold tracking-tight">Parallel tracks</h2>
         <ParallelTracks />
       </section>
     </div>

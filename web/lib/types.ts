@@ -8,12 +8,15 @@ export type TaskCategory =
   | "interview-prep"
   | "real-interview";
 
+export type TaskStatus = "todo" | "doing" | "done";
+
 export interface Task {
   id: string;
   category: TaskCategory;
   text: string;
   hours: number;
   resourceUrl?: string;
+  week?: 1 | 2 | 3 | 4;
 }
 
 export interface MonthPlan {
@@ -58,8 +61,13 @@ export interface DecisionEntry {
 export interface ProgressState {
   hoursPerDay: Record<string, number>;
   taskDone: Record<string, boolean>;
+  taskStatus: Record<string, TaskStatus>;
   applicationsSent: number;
   interviewsReached: number;
   resourcesStatus: Record<string, ResourceStatus>;
   lastUpdated: string;
+}
+
+export interface UIState {
+  sidebarCollapsed: boolean;
 }
