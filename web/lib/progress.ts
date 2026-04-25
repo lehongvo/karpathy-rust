@@ -1,10 +1,12 @@
-import type { ProgressState, ResourceStatus } from "./types";
+import type { ProgressState, ResourceStatus, TaskStatus, UIState } from "./types";
 
 const KEY = "karpathy-rust:progress:v1";
+const UI_KEY = "karpathy-rust:ui:v1";
 
 const empty = (): ProgressState => ({
   hoursPerDay: {},
   taskDone: {},
+  taskStatus: {},
   applicationsSent: 0,
   interviewsReached: 0,
   resourcesStatus: {},
@@ -15,7 +17,17 @@ export function loadProgress(): ProgressState {
   if (typeof window === "undefined") return empty();
   try {
     const raw = window.localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as ProgressState) : empty();
+    if (!raw) return empty();
+    const parsed = JSON.parse(raw) as Partial<ProgressState>;
+    const base = empty();
+    return {
+      ...base,
+      ...parsed,
+      hoursPerDay: parsed.hoursPerDay ?? {},
+      taskDone: parsed.taskDone ?? {},
+      taskStatus: parsed.taskStatus ?? {},
+      resourcesStatus: parsed.resourcesStatus ?? {},
+    };
   } catch {
     return empty();
   }
@@ -29,9 +41,16 @@ export function saveProgress(p: ProgressState): void {
   );
 }
 
-export function toggleTask(id: string): ProgressState {
+export function getTaskStatus(state: ProgressState, id: string): TaskStatus {
+  if (state.taskStatus[id]) return state.taskStatus[id];
+  if (state.taskDone[id]) return "done";
+  return "todo";
+}
+
+export function setTaskStatus(id: string, status: TaskStatus): ProgressState {
   const p = loadProgress();
-  p.taskDone[id] = !p.taskDone[id];
+  p.taskStatus[id] = status;
+  p.taskDone[id] = status === "done";
   saveProgress(p);
   return p;
 }
@@ -87,4 +106,21 @@ export function streak(): number {
     else break;
   }
   return s;
+}
+
+const emptyUI = (): UIState => ({ sidebarCollapsed: false });
+
+export function loadUIState(): UIState {
+  if (typeof window === "undefined") return emptyUI();
+  try {
+    const raw = window.localStorage.getItem(UI_KEY);
+    return raw ? { ...emptyUI(), ...(JSON.parse(raw) as Partial<UIState>) } : emptyUI();
+  } catch {
+    return emptyUI();
+  }
+}
+
+export function saveUIState(s: UIState): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(UI_KEY, JSON.stringify(s));
 }
