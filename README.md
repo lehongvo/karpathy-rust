@@ -3,7 +3,12 @@
 > Backend → remote Rust/Solana role in 12 months. Minimal, education-first plan + dashboard.
 > Inspired by Andrej Karpathy's [nanoGPT](https://github.com/karpathy/nanoGPT): clean, hackable, no magic.
 
+**Production**: <https://web-lehongvi19xgmailcoms-projects.vercel.app>
+**Sister repo**: [karpathy-health](https://github.com/lehongvo/karpathy-health) — PersonalOS productivity/health layer for the same dev. Two repos share design system.
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/lehongvo/karpathy-rust&root-directory=web)
+
+---
 
 ## What this repo is
 
@@ -25,13 +30,16 @@ karpathy-rust/
 │   ├── 06-strategic-investment.md
 │   ├── 07-starter-pack.md
 │   └── decision-log.md
-├── web/                        # Next.js 15 dashboard
+├── web/                        # Next.js 16 dashboard (linked Vercel root)
 │   ├── app/
 │   ├── components/
 │   ├── content/                # MDX monthly notes
 │   ├── lib/                    # types, plan-data, progress
 │   └── package.json
-└── .github/workflows/deploy.yml
+└── .github/
+    ├── dependabot.yml          # Weekly npm + actions update PRs
+    └── workflows/
+        └── auto-merge.yml      # Auto-squash patch/minor Dependabot PRs
 ```
 
 ## Quick start
@@ -43,19 +51,25 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:3000.
+Open <http://localhost:3000>.
 
 ## Stack
 
-Next.js 15 · React 19 · TypeScript strict · Tailwind v4 · `next-themes` · `framer-motion` · Recharts · Lucide · MDX. No DB, no auth — progress in `localStorage`.
+Next.js 16 · React 19.2 · TypeScript strict · Tailwind v4 · `next-themes` · `framer-motion` · Recharts · Lucide · MDX. No DB, no auth — progress in `localStorage`. Sidebar navigation (collapsible), dark default with rust/solana gradient accents, GitHub-style 365-day study heatmap, 3-state task status (todo / doing / done) with localStorage persistence.
 
-## Deploy to Vercel
+## Deploy & continuous maintenance
 
-Two options:
+| Mechanism | Trigger | Result |
+|---|---|---|
+| **Vercel git auto-deploy** | `git push origin main` | Build + deploy to prod (~50s); root directory = `web/`, framework = Next.js |
+| **Dependabot** | Weekly Mon 02:00 UTC | Opens PRs for npm + GitHub Actions deps, scoped `/web`, grouped patch+minor, labels `auto-merge` + `dependencies` |
+| **Auto-merge** (`.github/workflows/auto-merge.yml`) | Dependabot PR with semver-patch or semver-minor + CI green | GitHub squash-merges automatically; major bumps still need human review |
+| **Weekly health check** (remote agent) | Every Sunday 09:00 Asia/Saigon | Curls prod URL, runs `pnpm audit`, flags CVEs and major-version drift; surfaces only — no auto-fix |
 
-**A. Vercel project settings (recommended)**: import the repo, set Root Directory = `web`. Done.
-
-**B. CI workflow**: `.github/workflows/deploy.yml` runs `vercel --prod` on push to `main`. Requires repo secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. If secrets missing, the workflow fails soft and does not block local dev.
+Manual deploy (rarely needed; `git push origin main` covers it):
+```bash
+cd web && pnpm exec vercel deploy --prod --yes --token="$VERCEL_TOKEN"
+```
 
 ## Plan summary
 
@@ -68,6 +82,14 @@ Two options:
 
 Full breakdown: [`plan/03-master-plan.md`](plan/03-master-plan.md).
 
+## Tone
+
+Thẳng thắn (frank). Cites sources. Karpathy guidelines applied throughout: surgical changes, simplicity first, surface assumptions, define verifiable success criteria. See `plan/01-reality-check.md` for the bias-corrected market reality.
+
 ## License
 
 MIT — fork freely.
+
+## Credits
+
+Built using [Claude Code](https://claude.ai/code). Strategic data verified across ≥2 independent sources per claim (Stack Overflow Survey 2025, JetBrains DevEcosystem 2025, web3.career, CryptoJobsList, rustjobs.dev, Electric Capital, CoinDesk, real Solana JDs). Dashboard library docs verified through Context7.
